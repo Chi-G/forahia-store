@@ -27,8 +27,8 @@ A modern e-commerce application built with React, TypeScript, and Redux Toolkit.
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
-   cd comfy-store
+   git clone https://github.com/Chi-G/forahia-store.git
+   cd forahia-store
    ```
 
 2. **Install dependencies**
@@ -194,7 +194,6 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 🙏 Acknowledgments
 
-- [Mosh Hamedani](https://codewithmosh.com/) - TypeScript Course
 - [Shadcn/UI](https://ui.shadcn.com/) - Beautiful UI components
 - [Tailwind CSS](https://tailwindcss.com/) - CSS framework
 - [Redux Toolkit](https://redux-toolkit.js.org/) - State management
