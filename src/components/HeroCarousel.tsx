@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -15,9 +17,26 @@ import hero4 from '../assets/hero4.webp';
 const carouselImages = [hero1, hero2, hero3, hero4];
 
 function HeroCarousel() {
+  const [api, setApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (!api) return;
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 4000); // 4000ms = 4 seconds
+
+    return () => clearInterval(interval);
+  }, [api]);
+
   return (
     <div className='hidden lg:block'>
-      <Carousel>
+      <Carousel 
+        setApi={setApi}
+        opts={{ 
+          loop: true 
+        }}
+      >
         <CarouselContent>
           {carouselImages.map((image, index) => {
             return (

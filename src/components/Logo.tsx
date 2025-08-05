@@ -4,11 +4,11 @@ function Logo() {
   return (
     <Link
       to='/'
-      className='hidden lg:flex justify-center items-center bg-primary p-2 rounded-lg'
+      className='flex justify-center items-center bg-primary p-2 rounded-lg hover:bg-primary/90 transition-colors'
     >
       <img 
         src="/logo.png" 
-        alt="Comfy Store Logo" 
+        alt="Forahia Store Logo" 
         className='w-8 h-8 object-contain'
       />
     </Link>
