@@ -29,7 +29,7 @@ export const action =
       const jwt = response.data.jwt;
       store.dispatch(loginUser({ username, jwt }));
       return redirect('/');
-    } catch (error) {
+    } catch (error) { 
       console.log(error);
       toast({ description: 'Login Failed' });
       return null;
