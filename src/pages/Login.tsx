@@ -25,9 +25,16 @@ export const action =
         '/auth/local',
         data
       );
-      const username = response.data.user.username;
+      const { username, email, firstName, lastName, phoneNumber } = response.data.user;
       const jwt = response.data.jwt;
-      store.dispatch(loginUser({ username, jwt }));
+      store.dispatch(loginUser({ 
+        username, 
+        jwt, 
+        email, 
+        firstName, 
+        lastName, 
+        phoneNumber 
+      }));
       return redirect('/');
     } catch (error) { 
       console.log(error);
@@ -46,9 +53,16 @@ function Login() {
         identifier: 'test@test.com',
         password: 'secret',
       });
-      const username = response.data.user.username;
+      const { username, email, firstName, lastName, phoneNumber } = response.data.user;
       const jwt = response.data.jwt;
-      dispatch(loginUser({ username, jwt }));
+      dispatch(loginUser({ 
+        username, 
+        jwt, 
+        email, 
+        firstName, 
+        lastName, 
+        phoneNumber 
+      }));
       navigate('/');
     } catch (error) {
       console.log(error);

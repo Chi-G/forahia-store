@@ -40,6 +40,8 @@ function Register() {
           </CardHeader>
           <CardContent>
             <Form method='post'>
+              <FormInput type='text' name='firstName' label='First Name' />
+              <FormInput type='text' name='lastName' label='Last Name' />
               <FormInput type='text' name='username' />
               <FormInput type='email' name='email' />
               <FormInput type='password' name='password' />

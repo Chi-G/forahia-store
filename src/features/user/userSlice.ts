@@ -4,6 +4,10 @@ import { toast } from '@/components/ui/use-toast';
 export type User = {
   username: string;
   jwt: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
 };
 
 type UserState = {
@@ -37,9 +41,16 @@ const userSlice = createSlice({
       state.user = null;
       localStorage.removeItem('user');
     },
+    updateUser: (state, action: PayloadAction<Partial<User>>) => {
+      if (state.user) {
+        state.user = { ...state.user, ...action.payload };
+        localStorage.setItem('user', JSON.stringify(state.user));
+        toast({ description: 'Profile updated successfully' });
+      }
+    },
   },
 });
 
-export const { loginUser, logoutUser } = userSlice.actions;
+export const { loginUser, logoutUser, updateUser } = userSlice.actions;
 
 export default userSlice.reducer;

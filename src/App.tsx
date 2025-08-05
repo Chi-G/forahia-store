@@ -12,6 +12,7 @@ import {
   Login,
   Checkout,
   Orders,
+  Account,
 } from './pages';
 import { ErrorElement } from './components';
 
@@ -73,6 +74,11 @@ const router = createBrowserRouter([
         element: <Orders />,
         errorElement: <ErrorElement />,
         loader: ordersLoader(store),
+      },
+      {
+        path: 'account',
+        element: <Account />,
+        errorElement: <ErrorElement />,
       },
     ],
   },

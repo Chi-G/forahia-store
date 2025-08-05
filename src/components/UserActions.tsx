@@ -37,7 +37,7 @@ function UserActions() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="flex items-center space-x-1">
                     <User className="h-4 w-4" />
-                    <p className='text-xs sm:text-sm hidden md:block'>Hi, {user.username}</p>
+                    <p className='text-xs sm:text-sm hidden md:block'>Hi, {user.firstName}</p>
                   <ChevronDown className="h-3 w-3" />
                 </Button>
               </DropdownMenuTrigger>
