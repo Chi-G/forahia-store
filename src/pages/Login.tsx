@@ -8,6 +8,7 @@ import {
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SubmitBtn, FormInput, Footer, Header, Navbar } from '@/components';
+import SocialLogin from '@/components/SocialLogin';
 import { customFetch } from '@/utils';
 import { toast } from '@/components/ui/use-toast';
 import { type ReduxStore } from '@/store';
@@ -92,6 +93,9 @@ function Login() {
               >
                 Guest User
               </Button>
+              
+              <SocialLogin />
+              
               <p className='text-center mt-4'>
                 Not a member yet?{' '}
                 <Button type='button' asChild variant='link'>

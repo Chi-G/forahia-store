@@ -1,68 +1,83 @@
-import { ActionFunction, Form, redirect } from 'react-router-dom';
+import { useState } from 'react';
+import { Form } from 'react-router-dom';
 import FormInput from './FormInput';
-import SubmitBtn from './SubmitBtn';
-import { customFetch, formatAsDollars, type Checkout } from '@/utils';
+import PaystackPayment from './PaystackPayment';
+import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
-import { clearCart } from '../features/cart/cartSlice';
-import { ReduxStore } from '@/store';
 
-export const action =
-  (store: ReduxStore): ActionFunction =>
-  async ({ request }): Promise<null | Response> => {
-    const formData = await request.formData();
+function CheckoutForm() {
+  const [shippingInfo, setShippingInfo] = useState({
+    name: '',
+    address: ''
+  });
+  const [showPayment, setShowPayment] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     const name = formData.get('name') as string;
     const address = formData.get('address') as string;
 
     if (!name || !address) {
-      toast({ description: 'please fill out all fields' });
-      return null;
-    }
-    const user = store.getState().userState.user;
-    if (!user) {
-      toast({ description: 'please login to place an order' });
-      return redirect('/login');
+      toast({ 
+        description: 'Please fill out all fields',
+        variant: 'destructive'
+      });
+      return;
     }
 
-    const { cartItems, orderTotal, numItemsInCart } =
-      store.getState().cartState;
-
-    const info: Checkout = {
-      name,
-      address,
-      chargeTotal: orderTotal,
-      orderTotal: formatAsDollars(orderTotal),
-      cartItems,
-      numItemsInCart,
-    };
-
-    try {
-      await customFetch.post(
-        '/orders',
-        { data: info },
-        {
-          headers: {
-            Authorization: `Bearer ${user.jwt}`,
-          },
-        }
-      );
-
-      store.dispatch(clearCart());
-      toast({ description: 'order placed' });
-      return redirect('/orders');
-    } catch (error) {
-      toast({ description: 'order failed' });
-      return null;
-    }
+    setShippingInfo({ name, address });
+    setShowPayment(true);
   };
 
-function CheckoutForm() {
+  const handleBackToShipping = () => {
+    setShowPayment(false);
+  };
+
+  if (showPayment) {
+    return (
+      <div className="space-y-6">
+        <div className="border-b pb-4">
+          <h4 className="font-medium text-xl mb-2">Review Order</h4>
+          <div className="bg-muted p-4 rounded-lg">
+            <h5 className="font-medium mb-2">Shipping Information</h5>
+            <p><strong>Name:</strong> {shippingInfo.name}</p>
+            <p><strong>Address:</strong> {shippingInfo.address}</p>
+          </div>
+          <Button 
+            variant="outline" 
+            onClick={handleBackToShipping}
+            className="mt-4"
+          >
+            ← Edit Shipping Info
+          </Button>
+        </div>
+        
+        <PaystackPayment orderInfo={shippingInfo} />
+      </div>
+    );
+  }
+
   return (
-    <Form method='post' className='flex flex-col gap-y-4'>
+    <Form onSubmit={handleSubmit} className='flex flex-col gap-y-4'>
       <h4 className='font-medium text-xl mb-4'>Shipping Information</h4>
-      <FormInput label='first name' name='name' type='text' />
-      <FormInput label='address' name='address' type='text' />
-      <SubmitBtn text='Place Your Order' className=' mt-4' />
+      <FormInput 
+        label='first name' 
+        name='name' 
+        type='text' 
+        defaultValue={shippingInfo.name}
+      />
+      <FormInput 
+        label='address' 
+        name='address' 
+        type='text' 
+        defaultValue={shippingInfo.address}
+      />
+      <Button type="submit" className='mt-4'>
+        Continue to Payment
+      </Button>
     </Form>
   );
 }
+
 export default CheckoutForm;

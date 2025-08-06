@@ -49,7 +49,7 @@ function ComplexPaginationContainer() {
   };
 
   const renderPagination = () => {
-    let pages: React.ReactNode[] = [];
+    const pages: React.ReactNode[] = [];
     // first page
     pages.push(constructButton({ pageNumber: 1, isActive: page === 1 }));
 

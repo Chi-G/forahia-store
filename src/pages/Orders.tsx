@@ -31,13 +31,56 @@ export const loader =
       return { ...response.data };
     } catch (error) {
       console.log(error);
-      toast({ description: 'Failed to fetch orders' });
-      return null;
+      
+      // Handle 401 Unauthorized specifically
+      if (error && typeof error === 'object' && 'response' in error && 
+          error.response && typeof error.response === 'object' && 'status' in error.response && 
+          error.response.status === 401) {
+        toast({ 
+          description: 'Your session has expired. Please login again.',
+          variant: 'destructive'
+        });
+        return redirect('/login');
+      }
+      
+      // Handle other errors
+      toast({ 
+        description: 'Failed to fetch orders. Please check your connection and try again.',
+        variant: 'destructive'
+      });
+      
+      // Return a minimal structure instead of null to prevent destructuring errors
+      return {
+        data: [],
+        meta: {
+          pagination: {
+            page: 1,
+            pageSize: 10,
+            pageCount: 0,
+            total: 0
+          }
+        }
+      };
     }
   };
 
 function Orders() {
-  const { meta } = useLoaderData() as OrdersResponse;
+  const data = useLoaderData() as OrdersResponse | null;
+  
+  // Handle case where loader returns null due to error
+  if (!data || !data.meta) {
+    return (
+      <div className="text-center py-8">
+        <SectionTitle text='Unable to load orders' />
+        <p className="text-muted-foreground mt-4">
+          Please check your connection and try again, or contact support if the problem persists.
+        </p>
+      </div>
+    );
+  }
+
+  const { meta } = data;
+  
   if (meta.pagination.total < 1) {
     return <SectionTitle text='Please make an order' />;
   }

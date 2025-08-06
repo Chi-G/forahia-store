@@ -1,6 +1,7 @@
 import { formatAsDollars, type ProductsResponse } from '@/utils';
 import { Link, useLoaderData } from 'react-router-dom';
 import { Card, CardContent } from './ui/card';
+import { WishlistButton } from '@/components';
 
 function ProductsList() {
   const { data: products } = useLoaderData() as ProductsResponse;
@@ -11,22 +12,39 @@ function ProductsList() {
         const { title, price, image, company } = product.attributes;
         const dollarsAmount = formatAsDollars(price);
         return (
-          <Link key={product.id} to={`/products/${product.id}`}>
-            <Card>
-              <CardContent className='p-8 gap-y-4 grid md:grid-cols-3'>
-                <img
-                  src={image}
-                  alt={title}
-                  className='h-64 w-full md:h-48 md:w-48 rounded-md object-cover'
-                />
-                <div>
-                  <h2 className='text-xl font-semibold capitalize'>{title}</h2>
-                  <h4>{company}</h4>
-                </div>
-                <p className='text-primary md:ml-auto'>{dollarsAmount}</p>
-              </CardContent>
-            </Card>
-          </Link>
+          <div key={product.id} className="relative">
+            <Link to={`/products/${product.id}`}>
+              <Card className="transition-all duration-300 hover:shadow-lg">
+                <CardContent className='p-8 gap-y-4 grid md:grid-cols-3'>
+                  <div className="relative">
+                    <img
+                      src={image}
+                      alt={title}
+                      className='h-64 w-full md:h-48 md:w-48 rounded-md object-cover'
+                    />
+                    {/* Wishlist Button */}
+                    <div className="absolute top-2 right-2">
+                      <WishlistButton
+                        productID={product.id}
+                        title={title}
+                        company={company}
+                        price={price.toString()}
+                        image={image}
+                        category="General"
+                        size="sm"
+                        className="bg-white/80 hover:bg-white shadow-md"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className='text-xl font-semibold capitalize'>{title}</h2>
+                    <h4 className="text-muted-foreground">{company}</h4>
+                  </div>
+                  <p className='text-primary md:ml-auto font-semibold text-lg'>{dollarsAmount}</p>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
         );
       })}
     </div>

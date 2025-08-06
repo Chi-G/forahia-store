@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import themeReducer from './features/theme/themeSlice';
 import cartReducer from './features/cart/cartSlice';
 import userReducer from './features/user/userSlice';
+import wishlistReducer from './features/wishlist/wishlistSlice';
 // ...
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     themeState: themeReducer,
     cartState: cartReducer,
     userState: userReducer,
+    wishlistState: wishlistReducer,
   },
 });
 

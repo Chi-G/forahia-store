@@ -9,7 +9,7 @@ import {
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { SelectProductAmount, SelectProductColor } from '@/components';
+import { SelectProductAmount, SelectProductColor, WishlistButton } from '@/components';
 import { Mode } from '@/components/SelectProductAmount';
 import { useAppDispatch } from '@/hooks';
 import { addItem } from '@/features/cart/cartSlice';
@@ -86,10 +86,22 @@ function SingleProduct() {
             amount={amount}
             setAmount={setAmount}
           />
-          {/* CART BUTTON  */}
-          <Button size='lg' className='mt-10' onClick={addToCart}>
-            Add to bag
-          </Button>
+          {/* CART BUTTON & WISHLIST */}
+          <div className="flex gap-4 mt-10">
+            <Button size='lg' className='flex-1' onClick={addToCart}>
+              Add to Cart
+            </Button>
+            <WishlistButton
+              productID={product.id}
+              title={title}
+              company={company}
+              price={price.toString()}
+              image={image}
+              category="General"
+              size="lg"
+              variant="outline"
+            />
+          </div>
         </div>
       </div>
     </section>

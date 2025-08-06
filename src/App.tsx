@@ -13,6 +13,17 @@ import {
   Checkout,
   Orders,
   Account,
+  AuthCallback,
+  Inbox,
+  Wishlist,
+  Settings,
+  HelpCenter,
+  PlaceOrder,
+  PaymentOptions,
+  TrackOrder,
+  CancelOrder,
+  ReturnsRefunds,
+  LiveChat,
 } from './pages';
 import { ErrorElement } from './components';
 
@@ -25,7 +36,6 @@ import { loader as ordersLoader } from './pages/Orders';
 
 import { action as registerUser } from './pages/Register';
 import { action as loginUser } from './pages/Login';
-import { action as checkoutAction } from './components/CheckoutForm';
 
 import { store } from './store';
 const router = createBrowserRouter([
@@ -67,7 +77,6 @@ const router = createBrowserRouter([
         element: <Checkout />,
         errorElement: <ErrorElement />,
         loader: checkoutLoader(store),
-        action: checkoutAction(store),
       },
       {
         path: 'orders',
@@ -80,7 +89,62 @@ const router = createBrowserRouter([
         element: <Account />,
         errorElement: <ErrorElement />,
       },
+      {
+        path: 'inbox',
+        element: <Inbox />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'wishlist',
+        element: <Wishlist />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'settings',
+        element: <Settings />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'help-center',
+        element: <HelpCenter />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'place-order',
+        element: <PlaceOrder />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'payment-options',
+        element: <PaymentOptions />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'track-order',
+        element: <TrackOrder />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'cancel-order',
+        element: <CancelOrder />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'returns-refunds',
+        element: <ReturnsRefunds />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'live-chat',
+        element: <LiveChat />,
+        errorElement: <ErrorElement />,
+      },
     ],
+  },
+  {
+    path: '/auth/google/callback',
+    element: <AuthCallback />,
+    errorElement: <Error />,
   },
   {
     path: '/login',

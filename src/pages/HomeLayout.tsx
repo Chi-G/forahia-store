@@ -1,5 +1,6 @@
 import { Header, Loading, Navbar, Footer } from '@/components';
 import { Outlet, useNavigation } from 'react-router-dom';
+import WhatsAppSupport from '@/components/WhatsAppSupport';
 
 function HomeLayout() {
   const navigation = useNavigation();
@@ -15,6 +16,7 @@ function HomeLayout() {
       </main>
       
       <Footer />
+      <WhatsAppSupport />
     </div>
   );
 }

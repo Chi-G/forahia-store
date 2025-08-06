@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -30,6 +30,7 @@ function Account() {
   const user = useAppSelector((state) => state.userState.user);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const {
     register: registerProfile,
@@ -37,6 +38,7 @@ function Account() {
     formState: { errors: profileErrors },
     reset: resetProfile,
   } = useForm<AccountFormData>({
+    mode: 'onChange',
     defaultValues: {
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
@@ -46,6 +48,24 @@ function Account() {
     },
   });
 
+  // Update form values when user data changes
+  useEffect(() => {
+    if (user) {
+      const newValues = {
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        username: user.username || '',
+        email: user.email || '',
+        phoneNumber: user.phoneNumber || '',
+      };
+      
+      // Only update if not currently editing to avoid interfering with user input
+      if (!isEditingProfile) {
+        resetProfile(newValues);
+      }
+    }
+  }, [user, resetProfile, isEditingProfile]);
+
   const {
     register: registerPassword,
     handleSubmit: handleSubmitPassword,
@@ -54,9 +74,26 @@ function Account() {
     watch,
   } = useForm<PasswordFormData>();
 
-  const onSubmitProfile = (data: AccountFormData) => {
-    dispatch(updateUser(data));
-    setIsEditingProfile(false);
+  const onSubmitProfile = async (data: AccountFormData) => {
+    setIsSaving(true);
+    try {
+      dispatch(updateUser(data));
+      
+      // Reset form with the updated values to ensure fresh state
+      resetProfile({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        username: data.username,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+      });
+      
+      setIsEditingProfile(false);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const onSubmitPassword = (data: PasswordFormData) => {
@@ -136,7 +173,8 @@ function Account() {
                           required: 'First name is required' 
                         })}
                         disabled={!isEditingProfile}
-                        className={!isEditingProfile ? 'bg-muted' : ''}
+                        className={!isEditingProfile ? 'bg-muted cursor-not-allowed' : ''}
+                        placeholder="Enter your first name"
                       />
                       {profileErrors.firstName && (
                         <p className="text-sm text-red-500">
@@ -216,8 +254,8 @@ function Account() {
                   <div className="flex gap-2 pt-4">
                     {isEditingProfile ? (
                       <>
-                        <Button type="submit" size="sm">
-                          Save Changes
+                        <Button type="submit" size="sm" disabled={isSaving}>
+                          {isSaving ? 'Saving...' : 'Save Changes'}
                         </Button>
                         <Button 
                           type="button" 

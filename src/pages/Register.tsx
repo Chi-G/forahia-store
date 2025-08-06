@@ -2,6 +2,7 @@ import { ActionFunction, Form, Link, redirect } from 'react-router-dom';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SubmitBtn, FormInput, Footer, Header, Navbar } from '@/components';
+import SocialLogin from '@/components/SocialLogin';
 import { customFetch } from '@/utils';
 import { toast } from '@/components/ui/use-toast';
 import { AxiosError } from 'axios';
@@ -46,6 +47,9 @@ function Register() {
               <FormInput type='email' name='email' />
               <FormInput type='password' name='password' />
               <SubmitBtn text='Register' className='w-full mt-4' />
+              
+              <SocialLogin />
+              
               <p className='text-center mt-4'>
                 Already a member?{' '}
                 <Button type='button' asChild variant='link'>

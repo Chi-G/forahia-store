@@ -48,7 +48,7 @@ export type ProductsResponseWithParams = ProductsResponse & { params: Params };
 
 export type SingleProductResponse = {
   data: Product;
-  meta: {};
+  meta: Record<string, never>;
 };
 
 export type CartItem = {
@@ -78,6 +78,7 @@ export type Checkout = {
   orderTotal: string;
   cartItems: CartItem[];
   numItemsInCart: number;
+  paymentReference?: string;
 };
 
 export type Order = {
